@@ -6,8 +6,12 @@ import time
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import gzip
+import os  # 👈 नया import
 
 PLACEHOLDER = "https://via.placeholder.com/500x750?text=No+Image"
+
+# 🔑 API key from Streamlit Secrets
+API_KEY = st.secrets["TMDB_API_KEY"]
 
 # Reusable session with retries (stabilizes flaky network)
 session = requests.Session()
@@ -23,7 +27,7 @@ def fetch_poster(movie_id):
     # small delay so 5 rapid calls don't trigger rate-limit
     time.sleep(0.4)
     try:
-        url = f'https://api.themoviedb.org/3/movie/{int(movie_id)}?api_key=32537a001b28d15374f9e5da72be0b16&language=en-US'
+        url = f'https://api.themoviedb.org/3/movie/{int(movie_id)}?api_key={API_KEY}&language=en-US'
         response = session.get(url, timeout=8)
         response.raise_for_status()
         data = response.json()
@@ -51,7 +55,6 @@ def recommend(movie):
         recommended_movies_poster.append(PLACEHOLDER)
 
     return recommended_movies, recommended_movies_poster
-
 
 
 movies = pickle.load(open('movies.pkl', 'rb'))
