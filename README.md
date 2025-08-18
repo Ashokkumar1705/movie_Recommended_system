@@ -246,6 +246,12 @@ with gzip.open("similarity.pkl.gz", "wb") as f:
 
 * If posters are always placeholders, ensure `TMDB_API_KEY` is set in **Secrets**.
 
+## 🚀 Live Demo
+Check out the live deployed app here 👉 [Movie Recommendation System](https://movierecommendedsystem-fn7rhoac7ussp62vh2p4du.streamlit.app/)
+
+This app suggests movies based on your favorite one using **Machine Learning (Cosine Similarity + Content-Based Filtering)**. Built with **Python, Pandas, Streamlit** and deployed on **Streamlit Cloud**.
+
+
 ---
 
 ## 🗺️ Roadmap

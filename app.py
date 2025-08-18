@@ -6,11 +6,11 @@ import time
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import gzip
-import os  # 👈 नया import
+import os
 
 PLACEHOLDER = "https://via.placeholder.com/500x750?text=No+Image"
 
-# 🔑 API key from Streamlit Secrets
+#  API key from Streamlit Secrets
 API_KEY = st.secrets["TMDB_API_KEY"]
 
 # Reusable session with retries (stabilizes flaky network)
