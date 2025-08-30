@@ -7,20 +7,28 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import gzip
 import os
+import base64
 
-# ---- Local background setup ----
+# convert local image to base64
+def get_base64_image(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+#Load the local background.jpg
+img_base64 = get_base64_image("back3.jpg")
+
+# Inject CSS to display the image
 st.markdown(
-    """
+    f"""
     <style>
-    .stApp {
-        background-image: url("background.jpg");
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{img_base64}");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-    }
-
-    /* Dark overlay for better readability */
-    .stApp::before {
+    }}
+    .stApp::before {{
         content: "";
         position: absolute;
         top: 0;
@@ -29,36 +37,32 @@ st.markdown(
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.7);
         z-index: 0;
-    }
-
-    /* Make headings and text white */
-    h1, h2, h3, h4, h5, h6, p, span, label {
+    }}
+    h1, h2, h3, h4, h5, h6, p, span, label {{
         color: white !important;
-    }
-
-    /* Style selectbox and buttons */
-    .stSelectbox, .stButton>button {
+    }}
+    .stSelectbox, .stButton>button {{
         background-color: rgba(20, 20, 20, 0.8);
         color: white;
         border-radius: 8px;
         padding: 5px;
-    }
-
-    /* Add slight shadow to images */
-    img {
+    }}
+    img {{
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-    }
+    }}
     </style>
     """,
     unsafe_allow_html=True
 )
 
-
 PLACEHOLDER = "https://via.placeholder.com/500x750?text=No+Image"
 
 #  API key from Streamlit Secrets
+#  API key from Streamlit Secrets
 API_KEY = st.secrets["TMDB_API_KEY"]
+
+
 
 # Reusable session with retries (stabilizes flaky network)
 session = requests.Session()
@@ -113,7 +117,7 @@ with gzip.open('similarity.pkl.gz', 'rb') as f:
 
 st.title('Movie Recommender System')
 
-selected_movie_name = st.selectbox('How would you like to be  recommended?', movies_list)
+selected_movie_name = st.selectbox('Enter your favorite movie', movies_list)
 
 if st.button('Recommend'):
     names, posters = recommend(selected_movie_name)
@@ -121,12 +125,23 @@ if st.button('Recommend'):
     # beta_columns -> columns
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
-        st.text(names[0]); st.image(posters[0], use_container_width=True)
+       
+       st.markdown(f"<p style='color:white; text-align:center;'>{names[0]}</p>", unsafe_allow_html=True)
+       st.image(posters[0], use_container_width=True)
     with col2:
-        st.text(names[1]); st.image(posters[1], use_container_width=True)
+       
+       st.markdown(f"<p style='color:white; text-align:center;'>{names[1]}</p>", unsafe_allow_html=True)
+       st.image(posters[1], use_container_width=True)
     with col3:
-        st.text(names[2]); st.image(posters[2], use_container_width=True)
+       
+       st.markdown(f"<p style='color:white; text-align:center;'>{names[2]}</p>", unsafe_allow_html=True)
+       st.image(posters[2], use_container_width=True)
     with col4:
-        st.text(names[3]); st.image(posters[3], use_container_width=True)
+
+        st.markdown(f"<p style='color:white; text-align:center;'>{names[3]}</p>", unsafe_allow_html=True)
+        st.image(posters[3], use_container_width=True)
     with col5:
-        st.text(names[4]); st.image(posters[4], use_container_width=True)
+
+        st.markdown(f"<p style='color:white; text-align:center;'>{names[4]}</p>", unsafe_allow_html=True)
+        st.image(posters[4], use_container_width=True)
+
