@@ -8,6 +8,53 @@ from urllib3.util.retry import Retry
 import gzip
 import os
 
+# ---- Local background setup ----
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("background.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* Dark overlay for better readability */
+    .stApp::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 0;
+    }
+
+    /* Make headings and text white */
+    h1, h2, h3, h4, h5, h6, p, span, label {
+        color: white !important;
+    }
+
+    /* Style selectbox and buttons */
+    .stSelectbox, .stButton>button {
+        background-color: rgba(20, 20, 20, 0.8);
+        color: white;
+        border-radius: 8px;
+        padding: 5px;
+    }
+
+    /* Add slight shadow to images */
+    img {
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 PLACEHOLDER = "https://via.placeholder.com/500x750?text=No+Image"
 
 #  API key from Streamlit Secrets
