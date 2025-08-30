@@ -59,7 +59,6 @@ st.markdown(
 PLACEHOLDER = "https://via.placeholder.com/500x750?text=No+Image"
 
 #  API key from Streamlit Secrets
-#  API key from Streamlit Secrets
 API_KEY = st.secrets["TMDB_API_KEY"]
 
 
@@ -94,18 +93,23 @@ def recommend(movie):
 
     recommended_movies = []
     recommended_movies_poster = []
+    recommended_movies_ids = []
+
     for i in movies_list:
         # use real TMDB id saved in DataFrame (change 'movie_id' to your column name if different)
         tmdb_id = movies.iloc[i[0]].movie_id
         recommended_movies.append(movies.iloc[i[0]].title)
         recommended_movies_poster.append(fetch_poster(tmdb_id))
+        recommended_movies_ids.append(tmdb_id)
+
 
     # guarantee 5 entries even if some posters fail
     while len(recommended_movies) < 5:
         recommended_movies.append("N/A")
         recommended_movies_poster.append(PLACEHOLDER)
 
-    return recommended_movies, recommended_movies_poster
+    return recommended_movies, recommended_movies_poster, recommended_movies_ids
+
 
 
 movies = pickle.load(open('movies.pkl', 'rb'))
@@ -120,28 +124,44 @@ st.title('Movie Recommender System')
 selected_movie_name = st.selectbox('Enter your favorite movie', movies_list)
 
 if st.button('Recommend'):
-    names, posters = recommend(selected_movie_name)
+    names, posters, ids = recommend(selected_movie_name)
+
 
     # beta_columns -> columns
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
-       
-       st.markdown(f"<p style='color:white; text-align:center;'>{names[0]}</p>", unsafe_allow_html=True)
-       st.image(posters[0], use_container_width=True)
+
+        st.image(posters[0], use_container_width=True)
+        st.markdown(
+           f"<p style='color:white; text-align:center;'><a href='https://www.themoviedb.org/movie/{ids[0]}' target='_blank' style='color:white; text-decoration:none;'>{names[0]}</a></p>",
+             unsafe_allow_html=True
+        )
+
     with col2:
-       
-       st.markdown(f"<p style='color:white; text-align:center;'>{names[1]}</p>", unsafe_allow_html=True)
-       st.image(posters[1], use_container_width=True)
+        st.image(posters[1], use_container_width=True)
+        st.markdown(
+            f"<p style='color:white; text-align:center;'><a href='https://www.themoviedb.org/movie/{ids[1]}' target='_blank' style='color:white; text-decoration:none;'>{names[1]}</a></p>",
+             unsafe_allow_html=True
+        )
+
     with col3:
-       
-       st.markdown(f"<p style='color:white; text-align:center;'>{names[2]}</p>", unsafe_allow_html=True)
-       st.image(posters[2], use_container_width=True)
+        st.image(posters[2], use_container_width=True)
+        st.markdown(
+            f"<p style='color:white; text-align:center;'><a href='https://www.themoviedb.org/movie/{ids[2]}' target='_blank' style='color:white; text-decoration:none;'>{names[2]}</a></p>",
+              unsafe_allow_html=True
+        )
+
     with col4:
-
-        st.markdown(f"<p style='color:white; text-align:center;'>{names[3]}</p>", unsafe_allow_html=True)
         st.image(posters[3], use_container_width=True)
-    with col5:
+        st.markdown(
+            f"<p style='color:white; text-align:center;'><a href='https://www.themoviedb.org/movie/{ids[3]}' target='_blank' style='color:white; text-decoration:none;'>{names[3]}</a></p>",
+              unsafe_allow_html=True
+       )
 
-        st.markdown(f"<p style='color:white; text-align:center;'>{names[4]}</p>", unsafe_allow_html=True)
+    with col5:
         st.image(posters[4], use_container_width=True)
+        st.markdown(
+           f"<p style='color:white; text-align:center;'><a href='https://www.themoviedb.org/movie/{ids[4]}' target='_blank' style='color:white; text-decoration:none;'>{names[4]}</a></p>",
+              unsafe_allow_html=True
+        )
 
